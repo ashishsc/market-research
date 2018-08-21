@@ -1,11 +1,84 @@
 'use strict';
 
+let displayedImage = [];
+let picOnSite = 3;
+let uniqueArray = [];
+let maxTurns = 25;
+let totalTurns = 0;
+
+//Create image list
+
+const divEl = document.getElementById('picture-lists');
+for (let i = 0; i < picOnSite; i++) {
+  const imageEl = document.createElement('img');
+  divEl.appendChild(imageEl);
+}
 const imageEl1 = document.getElementById('picture1');
 const imageEl2 = document.getElementById('picture2');
 const imageEl3 = document.getElementById('picture3');
 const buttonEl = document.getElementById('button');
 
-let totalTurns = 0;
+const uniqueArrayGenerator = () => {
+  for (let t = 0; t < maxTurns; t++) {
+    uniqueArray.push([]);
+  }
+};
+
+uniqueArrayGenerator();
+
+const arrayGenerator = () => {
+  for (let t = 0; t < picOnSite; t++) {
+    displayedImage[t] = (Math.floor(Math.random() * 20));
+  }
+};
+
+//create function to check for item uniqueness
+
+const checkImage = () => {
+  //Step 1 run generator
+  arrayGenerator();
+  console.log(displayedImage);
+
+  //Step 2 create a loop to check each array item to make sure its unique
+  for (let i = 0; i < picOnSite - 1; i++) {
+    for (let j = i + 1; j < picOnSite; j++) {
+      console.log(displayedImage[i] + ' vs ' + displayedImage[j]);
+      console.log(displayedImage[i] === displayedImage[j]);
+      if (displayedImage[i] === displayedImage[j]) {
+        return checkImage();
+      }
+    }
+  }
+  console.log('Confirmed array is ' + displayedImage);
+
+  for (let i = 0; i < picOnSite; i++) {
+    for (let j = 0; j < picOnSite; j++) {
+      console.log(displayedImage[i] + ' vs ' + uniqueArray[totalTurns][j]);
+      console.log(displayedImage[i] === uniqueArray[totalTurns][j]);
+      //if (uniqueArray[totalTurns-1][i] === uniqueArray[totalTurns][j])
+      if (displayedImage[i] === uniqueArray[totalTurns][j]) {
+        return checkImage();
+      }
+
+    }
+  }
+  console.log(displayedImage);
+  totalTurns++;
+  //step 4 if all these passes then the unique array is stored to the actual turn its on, and increases total turn
+  for (let i = 0; i < displayedImage.length; i++) {
+    uniqueArray[totalTurns][i] = displayedImage[i];
+  }
+  console.log(uniqueArray[totalTurns]);
+
+};
+
+checkImage();
+
+
+
+
+
+/*
 const allItems = [];
 const numberStorer1 = [];
 const numberStorer2 = [];
@@ -111,3 +184,4 @@ buttonEl.addEventListener('click', function (event) {
 
   }
 });
+*/
