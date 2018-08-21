@@ -1,21 +1,31 @@
 'use strict';
 
+const allItems = [];
 let displayedImage = [];
-let picOnSite = 3;
+let picOnSite = prompt('How many pictures do you want to display?');
 let uniqueArray = [];
 let maxTurns = 25;
 let totalTurns = 0;
+let catalogItemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck',
+  'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can', 'wine-glass',
+];
+const divEl = document.getElementById('picture-lists');
 
+
+function CatalogItems(name) {
+  this.name = name;
+  this.timesShown = 0;
+  this.path = `img/${name}.jpg`;
+  allItems.push(this);
+  this.timesClicked = 0;
+}
+
+
+catalogItemNames.forEach(function (itemName) {
+  new CatalogItems(itemName);
+});
 //Create image list
 
-const divEl = document.getElementById('picture-lists');
-for (let i = 0; i < picOnSite; i++) {
-  const imageEl = document.createElement('img');
-  divEl.appendChild(imageEl);
-}
-const imageEl1 = document.getElementById('picture1');
-const imageEl2 = document.getElementById('picture2');
-const imageEl3 = document.getElementById('picture3');
 const buttonEl = document.getElementById('button');
 
 const uniqueArrayGenerator = () => {
@@ -28,7 +38,7 @@ uniqueArrayGenerator();
 
 const arrayGenerator = () => {
   for (let t = 0; t < picOnSite; t++) {
-    displayedImage[t] = (Math.floor(Math.random() * 20));
+    displayedImage[t] = (Math.floor(Math.random() * catalogItemNames.length));
   }
 };
 
@@ -70,11 +80,17 @@ const checkImage = () => {
   }
   console.log(uniqueArray[totalTurns]);
 
+  for (let i = 0; i < picOnSite; i++) {
+    const imageEl = document.createElement('img');
+
+    imageEl.src = allItems[uniqueArray[totalTurns][i]].path;
+    imageEl.setAttribute('id', i);
+
+    divEl.appendChild(imageEl);
+  }
 };
 
 checkImage();
-
-
 
 
 
@@ -120,21 +136,7 @@ const showRandomItem = () => {
 };
 
 
-function CatalogItems(name) {
-  this.name = name;
-  this.timesShown = 0;
-  this.path = `img/${name}.jpg`;
-  allItems.push(this);
-  this.timesClicked = 0;
-}
 
-let catalogItemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck',
-  'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can', 'wine-glass',
-];
-
-catalogItemNames.forEach(function (itemName) {
-  new CatalogItems(itemName);
-});
 
 showRandomItem();
 console.log(numberStorer1);
